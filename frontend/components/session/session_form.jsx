@@ -11,26 +11,35 @@ class SessionForm extends React.Component{
         }
         debugger
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleUsername=this.handleUsername.bind(this);
+    this.handlePassword = this.handlePassword.bind(this);
     }
 
-    handleChange(event) {
-        this.setState({username: event.target.value})
-    }
+   
 
     handleSubmit(e){
         debugger
         e.preventDefault();
         const user = Object.assign({}, this.state);
         debugger
-        this.props.processForm(user);
+        this.props.processForm(user)
+        .then(() => this.props.history.push('/'));
+    }
+
+    handleUsername(e){
+        this.setState({username: e.target.value})
+    }
+    handlePassword(e) {
+        this.setState({ password: e.target.value })
     }
 
     render(){
         const displayText = this.props.formType === 'login' ? "Login Page" : "Signup Page";
         const linkText = this.props.formType === 'login' ? "Signup Page" : "Login Page";
         const otherLink = this.props.formType === 'login' ? "/signup" : "/login";
+        const redirectLink = this.props.formType === 'login' ? "/login" : "/signup";
         const errors = this.props.errors.map(error =>{ 
-            <li>{error}</li>
+            return <li>{error}</li>
          })
         debugger
         return (
@@ -39,12 +48,12 @@ class SessionForm extends React.Component{
                     <form className="session-form" onSubmit={this.handleSubmit}>
                         <label>Username: 
                             <br/>
-                        <input type="text"/>
+                        <input type="text" onChange={this.handleUsername}/>
                         </label>
                         <br/>
                         <label>Password: 
                             <br/>
-                            <input type="password"/>
+                            <input type="password" onChange={this.handlePassword}/>
                         </label>
                         <br/>
                         <button>Submit</button>
@@ -55,7 +64,7 @@ class SessionForm extends React.Component{
                         <ul>
                             {errors}
                         </ul>
-
+                        {this.props.currentUser ? <Redirect to="/" /> : <Redirect to={redirectLink} />}
                     </form>
             </div>
         )

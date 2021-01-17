@@ -14,7 +14,7 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
     debugger
     return {
         processForm: (user) => dispatch(login(user)),
-        ownProps
+        receiveErrors: error => dispatch(receiveErrors(error))
     }
 }
 

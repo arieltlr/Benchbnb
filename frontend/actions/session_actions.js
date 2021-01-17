@@ -6,13 +6,13 @@ export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 
 export const login = user => dispatch => {
     return APIUtil.login(user)
-        .then((currentUser) => dispatch(receiveCurrentUser(currentUser)))
-        .fail(errors => dispatch(receiveErrors(errors)));
+        .then((currentUser) => dispatch(receiveCurrentUser(currentUser)),
+        (errors) => dispatch(receiveErrors(errors.responseJSON )));
 }
 export const logout = () => dispatch => {
     return APIUtil.logout()
-        .then((currentUser) => dispatch(logoutCurrentUser()))
-        .fail(errors => dispatch(receiveErrors(errors)));
+        .then((currentUser) => dispatch(logoutCurrentUser()), 
+        (errors) => dispatch(receiveErrors(errors.responseJSON)));
 }
 
 export const signup = user => dispatch => {
